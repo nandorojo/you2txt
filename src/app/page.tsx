@@ -47,6 +47,12 @@ function useMutation() {
         const s = useTranscriptionHistory.getState();
 
         s.actions.addVideo({ id, title, imgUrl });
+      } else {
+        toast({
+          title: "Transcript created, but...",
+          description: "We couldn't save it to your history.",
+          variant: "destructive",
+        });
       }
       return response.text();
     },
