@@ -3156,6 +3156,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-async-hook@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "react-async-hook@npm:4.0.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/bc279b295e7179c3a4ef6dda79823e1ec3d9af52b13b4ad4f5979ef84f745d7ed9076c9ec4950d02bbcfc0b3854a023720e045f0c340d1cd3a594710e690516f
+  languageName: node
+  linkType: hard
+
 "react-day-picker@npm:^8.10.1":
   version: 8.10.1
   resolution: "react-day-picker@npm:8.10.1"
@@ -4017,6 +4026,7 @@ __metadata:
     next-themes: "npm:^0.4.3"
     postcss: "npm:^8"
     react: "npm:19.0.0-rc-66855b96-20241106"
+    react-async-hook: "npm:^4.0.0"
     react-day-picker: "npm:^8.10.1"
     react-dom: "npm:19.0.0-rc-66855b96-20241106"
     react-hook-form: "npm:^7.53.2"
