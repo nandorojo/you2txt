@@ -1,6 +1,6 @@
 # You2Txt
 
-<img src="https://you2txt.com/og.png"></img>
+<img src="https://you2txt.com/og.png" style="aspect-ratio:1.985"></img>
 
 I built You2Txt for the Vercel + Nvidia 2-hour hackathon. It turns any YouTube video into a transcribed `.txt` file.
 
