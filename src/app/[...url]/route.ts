@@ -1,5 +1,6 @@
 import {
   getYouTubeVideoId,
+  TranscriptError,
   transcriptFromYouTubeId,
   transcriptToTextFile,
 } from "./youtube";
@@ -68,6 +69,10 @@ export async function GET(request: Request): Promise<Response> {
     // Return plain text response
     return new Response(combinedText, { headers });
   } catch (error) {
+    if (error instanceof TranscriptError) {
+      console.error("Transcript processing error:", error.message);
+      return new Response(error.message, { status: 500 });
+    }
     console.error("Transcript processing error:", error);
     return new Response("Failed to process transcripts", { status: 500 });
   }
