@@ -1,7 +1,5 @@
 import { Redis } from "@upstash/redis";
 import { z } from "zod";
-import { HttpsProxyAgent } from "https-proxy-agent";
-// import request from "request-promise";
 import fetch from "node-fetch";
 
 const redis = Redis.fromEnv();
