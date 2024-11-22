@@ -100,7 +100,7 @@ export default function Page() {
 
             mutation.execute(url, includeTimestamps, filterOutMusic);
           }}
-          className='w-full space-y-4 self-center max-w-[600px]'
+          className='w-full space-y-4 self-center max-w-[680px]'
         >
           <h1 className='text-2xl lg:text-4xl text-left lg:text-center font-bold tracking-tighter'>
             YouTube Video → txt file
@@ -130,7 +130,7 @@ export default function Page() {
             />
           </div>
 
-          <div className='flex items-center justify-center gap-2 flex-wrap'>
+          <div className='flex lg:items-center lg:justify-center gap-2 flex-wrap'>
             <Button
               type='submit'
               className='bg-[#FF0032] hover:bg-red-700 text-white'
