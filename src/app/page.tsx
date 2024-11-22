@@ -261,19 +261,17 @@ function History() {
   const history = useTranscriptionHistory();
   return (
     <AnimatePresence>
-      {history.videos.length === 0 ? (
-        <div className='p-2 text-sm text-muted-foreground'>No history yet.</div>
-      ) : (
-        history.videos
-          .slice()
-          .reverse()
-          .map((video) => {
-            if (!video.imgUrl) return null;
-            if (!video.title) return null;
-            if (!video.id) return null;
-            return <HistoryItem {...video} key={video.id} />;
-          })
-      )}
+      {history.videos.length === 0
+        ? null
+        : history.videos
+            .slice()
+            .reverse()
+            .map((video) => {
+              if (!video.imgUrl) return null;
+              if (!video.title) return null;
+              if (!video.id) return null;
+              return <HistoryItem {...video} key={video.id} />;
+            })}
     </AnimatePresence>
   );
 }
