@@ -122,6 +122,10 @@ export async function transcriptFromYouTubeId(
     console.log("[key]", key, Object.keys(playerResponse[key]));
     console.log("[key][keys]", playerResponse[key]);
   });
+  console.log(
+    "[captions][in HTML?]",
+    JSON.stringify(playerResponse).toLowerCase().includes("caption")
+  );
   if (!captions?.length) {
     throw new TranscriptError("No captions available for this video");
   }
