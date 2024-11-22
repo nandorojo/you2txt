@@ -64,7 +64,7 @@ export default function Page() {
 
           mutation.execute();
         }}
-        className='w-full space-y-4 self-center max-w-[700px]'
+        className='w-full space-y-4 self-center max-w-[600px]'
       >
         <div className='relative w-full'>
           <div className=' bg-muted/50 pointer-events-none bg-gradient-to-bl from-background-50 to-background-100 dark:from-background-300 dark:to-background-500 rounded-tl-lg rounded-bl-lg absolute inset-y-0 left-0 flex items-center pr-2 pl-3'>
