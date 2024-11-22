@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "You2Txt | by Fernando Rojoyarn ",
+  title: "You2Txt | by Fernando Rojo",
   description: "YouTube Video → txt file",
   openGraph: {
     images: [
