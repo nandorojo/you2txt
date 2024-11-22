@@ -5,6 +5,8 @@ import {
   transcriptToTextFile,
 } from "./youtube";
 
+import { Buffer } from "node:buffer";
+
 export async function GET(request: Request): Promise<Response> {
   try {
     const url = new URL(request.url);

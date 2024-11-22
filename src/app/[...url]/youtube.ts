@@ -2,7 +2,10 @@ import { Redis } from "@upstash/redis";
 import { z } from "zod";
 import fetch from "node-fetch";
 
-const redis = Redis.fromEnv();
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+});
 
 const CACHE_TTL = 60 * 60 * 24; // 24 hours in seconds
 
