@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useAsyncCallback } from "react-async-hook";
-import { Copy, Menu, Settings } from "lucide-react";
+import { Copy, Menu, Settings, Text } from "lucide-react";
 import { toast, useToast } from "@/hooks/use-toast";
 import { APP_URL } from "./APP_URL";
 import {
@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
 function useMutation() {
   return useAsyncCallback(
@@ -212,7 +213,8 @@ function TranscriptDialog({
         <div className='whitespace-pre-wrap font-mono text-sm overflow-y-auto flex-1'>
           {transcript ?? prev.current}
         </div>
-        <div className='flex justify-end mt-4'>
+        <div className='flex justify-end mt-4 gap-2'>
+          <div>Next time, try {}</div>
           <Button
             variant='outline'
             onClick={async () => {
