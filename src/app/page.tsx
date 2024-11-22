@@ -24,6 +24,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import Image from "next/image";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 
 function useMutation() {
   return useAsyncCallback(
@@ -70,15 +71,15 @@ export default function Page() {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <aside className='z-[0] flex-col hidden lg:flex w-[250px] bg-muted/15 pt-20 gap-2 h-full fixed top-0 left-0 bottom-0 overflow-y-auto'>
-        <div className='flex flex-col gap-2 flex-1 m-2 bg-muted rounded-lg p-4'>
-          <h2 className='text-lg font-medium tracking-tight'>Recents</h2>
+      <aside className='z-[0] flex-col hidden lg:flex w-[250px] bg-muted/15 pt-16 gap-2 h-full fixed top-0 left-0 bottom-0 overflow-y-auto'>
+        <div className='flex flex-col gap-2 flex-1 m-2 mt-0 bg-muted rounded-lg p-4'>
+          <h2 className='font-medium tracking-tight'>Recents</h2>
           <div className='flex flex-col gap-1'>
             <History />
           </div>
         </div>
       </aside>
-      <header className='absolute top-0 right-0 p-3 lg:hidden'>
+      <header className='absolute top-0 right-0 p-3 lg:hidden z-50'>
         <HistoryDialog />
       </header>
       <main className='flex min-h-screen bg-background flex-col justify-center gap-4 p-4 lg:flex-1'>
@@ -240,7 +241,10 @@ function HistoryDialog() {
       <PopoverTrigger asChild>
         <Button variant='outline'>History</Button>
       </PopoverTrigger>
-      <PopoverContent align='end' className='overflow-y-auto max-h-[80dvh]'>
+      <PopoverContent
+        align='end'
+        className='overflow-y-auto max-h-[80dvh] gap-2 flex flex-col origin-top-right'
+      >
         <History />
       </PopoverContent>
     </Popover>
@@ -250,7 +254,7 @@ function HistoryDialog() {
 function History() {
   const history = useTranscriptionHistory();
   return (
-    <>
+    <AnimatePresence>
       {history.videos.length === 0 ? (
         <div className='p-2 text-sm text-muted-foreground'>No history yet.</div>
       ) : (
@@ -264,7 +268,7 @@ function History() {
             return <HistoryItem {...video} key={video.id} />;
           })
       )}
-    </>
+    </AnimatePresence>
   );
 }
 
@@ -280,8 +284,7 @@ function HistoryItem({
   const mutation = useMutation();
   return (
     <>
-      <div
-        key={id}
+      <motion.div
         onClick={() =>
           mutation.execute(`https://www.youtube.com/watch?v=${id}`, true, true)
         }
@@ -289,6 +292,7 @@ function HistoryItem({
           "p-2 rounded-lg bg-muted flex flex-col gap-3 cursor-pointer border-slate-400 shadow-sm",
           mutation.loading && "opacity-50"
         )}
+        layoutId={id}
       >
         <Image
           width={1200}
@@ -305,7 +309,7 @@ function HistoryItem({
         <div className='text-sm font-medium text-ellipsis line-clamp-2'>
           {title}
         </div>
-      </div>
+      </motion.div>
 
       <TranscriptDialog
         transcript={mutation.result}
