@@ -12,7 +12,7 @@ If there's interest, maybe I can set up a self-hosted proxy or raspberry pi for 
 
 ## Local development
 
-This project was made with Next.js, Tailwind (shadcn) and v0.
+This project was made with Next.js, Tailwind (shadcn), v0, and Claude (through Cursor's composer).
 
 ```sh
 yarn
