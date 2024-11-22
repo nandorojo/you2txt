@@ -89,6 +89,7 @@ export async function transcriptFromYouTubeId(
     playerResponse?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
 
   if (!captions?.length) {
+    console.log("[missing-captions]", JSON.stringify(playerResponse));
     throw new TranscriptError("No captions available for this video");
   }
 

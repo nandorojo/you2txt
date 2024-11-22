@@ -48,7 +48,7 @@ function useMutation() {
           title: decodeURIComponent(atob(title)),
           imgUrl: decodeURIComponent(atob(imgUrl)),
         });
-      } else {
+      } else if (response.ok) {
         toast({
           title: "Transcript created, but...",
           description: "We couldn't save it to your history.",
