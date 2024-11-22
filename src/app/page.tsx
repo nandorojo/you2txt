@@ -87,14 +87,6 @@ export default function Page() {
           <HistoryDialog />
         </header>
 
-        <h1 className='text-2xl lg:text-4xl text-left lg:text-center font-bold tracking-tighter'>
-          YouTube Video → txt file
-        </h1>
-        <p className='text-lg lg:text-center text-muted-foreground'>
-          Transcribe any YouTube video into a text file and use it to train your
-          LLM.
-        </p>
-
         <form
           onSubmit={(e: React.FormEvent) => {
             e.preventDefault();
@@ -104,6 +96,13 @@ export default function Page() {
           }}
           className='w-full space-y-4 self-center max-w-[600px]'
         >
+          <h1 className='text-2xl lg:text-4xl text-left lg:text-center font-bold tracking-tighter'>
+            YouTube Video → txt file
+          </h1>
+          <p className='text-lg lg:text-center text-muted-foreground'>
+            Transcribe any YouTube video into a text file and use it to train
+            your LLM.
+          </p>
           <div className='relative w-full'>
             <div className=' bg-muted/50 pointer-events-none bg-gradient-to-bl from-background-50 to-background-100 dark:from-background-300 dark:to-background-500 rounded-tl-lg rounded-bl-lg absolute inset-y-0 left-0 flex items-center pr-2 pl-3'>
               <span>{APP_URL}/</span>
