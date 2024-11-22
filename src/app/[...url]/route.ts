@@ -7,7 +7,8 @@ import {
 
 export async function GET(request: Request): Promise<Response> {
   try {
-    const { searchParams } = new URL(request.url);
+    const url = new URL(request.url);
+    const { searchParams } = url;
     const videoParams = searchParams.getAll("v");
     const includeTimestamps = searchParams.get("timestamps") === "true";
     const filterOutMusic = searchParams.get("filterOutMusic") === "true";
@@ -22,7 +23,14 @@ export async function GET(request: Request): Promise<Response> {
     ];
 
     if (!videoIds.length) {
-      return new Response("No valid video IDs provided", { status: 400 });
+      const ending = url.toString().split(url.host)[1];
+      console.log("[ending]", ending);
+      const id = getYouTubeVideoId(ending);
+      if (id) {
+        videoIds.push(id);
+      } else {
+        return new Response("No valid video IDs provided", { status: 400 });
+      }
     }
 
     // Fetch all transcripts in parallel
