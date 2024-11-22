@@ -50,6 +50,7 @@
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
     "next-themes": "^0.4.3",
+    "node-fetch": "^3.3.2",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-async-hook": "^4.0.0",
     "react-day-picker": "^8.10.1",

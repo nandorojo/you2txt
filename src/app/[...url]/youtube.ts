@@ -1,7 +1,8 @@
 import { Redis } from "@upstash/redis";
 import { z } from "zod";
 import { HttpsProxyAgent } from "https-proxy-agent";
-import request from "request-promise";
+// import request from "request-promise";
+import fetch from "node-fetch";
 
 const redis = Redis.fromEnv();
 
@@ -41,23 +42,23 @@ function getRedisCacheKey(videoId: string) {
   return `youtube-transcript-${videoId}`;
 }
 
-async function getVideoProxied(videoId: string) {
-  return new Promise((resolve, reject) =>
-    request(
-      {
-        url: `https://www.youtube.com/watch?v=${videoId}`,
-        proxy: process.env.PROXY_URL,
-      },
-      (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      }
-    )
-  );
-}
+// async function getVideoProxied(videoId: string) {
+//   return new Promise((resolve, reject) =>
+//     request(
+//       {
+//         url: `https://www.youtube.com/watch?v=${videoId}`,
+//         proxy: process.env.PROXY_URL,
+//       },
+//       (err, res) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(res);
+//         }
+//       }
+//     )
+//   );
+// }
 
 export async function transcriptFromYouTubeId(
   videoId: string,
@@ -79,10 +80,6 @@ export async function transcriptFromYouTubeId(
   const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
   console.log("[proxy]", process.env.PROXY_URL);
   const response = await fetch(videoUrl, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    },
     ...(process.env.PROXY_URL && {
       agent: new HttpsProxyAgent(process.env.PROXY_URL),
     }),
@@ -120,8 +117,6 @@ export async function transcriptFromYouTubeId(
   console.log("[captions]", JSON.stringify(playerResponse.captions));
   console.log("[captions][keys]", Object.keys(playerResponse));
   if (!captions?.length) {
-    const proxied = await getVideoProxied(videoId);
-    console.log("[proxied]", proxied);
     throw new TranscriptError("No captions available for this video");
   }
 
