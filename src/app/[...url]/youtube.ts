@@ -127,7 +127,9 @@ export async function transcriptFromYouTubeId(
     JSON.stringify(playerResponse).toLowerCase().includes("caption")
   );
   if (!captions?.length) {
-    throw new TranscriptError("No captions available for this video");
+    throw new TranscriptError(
+      "We hit a rate limit. Fernando is probably checking on it."
+    );
   }
 
   // Fetch transcript data
