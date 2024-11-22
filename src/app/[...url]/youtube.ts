@@ -80,12 +80,13 @@ export async function transcriptFromYouTubeId(
   const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
   console.log("[proxy]", process.env.PROXY_URL);
   const response = await fetch(videoUrl, {
-    ...(process.env.PROXY_URL && {
-      agent: new HttpsProxyAgent(process.env.PROXY_URL),
-    }),
+    // ...(process.env.PROXY_URL && {
+    //   agent: new HttpsProxyAgent(process.env.PROXY_URL),
+    // }),
   });
 
   if (!response.ok) {
+    console.error("[oh nooo]", await response.text());
     throw new TranscriptError(
       "Failed to fetch video. This might be a YouTube rate limit."
     );
