@@ -128,7 +128,7 @@ export async function transcriptFromYouTubeId(
   );
   if (!captions?.length) {
     throw new TranscriptError(
-      "We hit a rate limit. Fernando is probably checking on it. You can run the open source code on your own laptop to get around it. https://github.com/nandorojo/you2txt.com"
+      "We hit a rate limit. Fernando is probably checking on it. You can run the open source code on your own laptop to get around it. https://github.com/nandorojo/you2txt"
     );
   }
 
