@@ -27,7 +27,11 @@ export async function GET(request: Request): Promise<Response> {
     const transcripts = await Promise.all(
       videoIds.map(async (id) => {
         try {
-          return await transcriptFromYouTubeId(id);
+          const r = await transcriptFromYouTubeId(id);
+          if (!r) {
+            throw new Error(`Failed to fetch transcript for video ${id}`);
+          }
+          return { ...r, id };
         } catch (error) {
           console.error(`Failed to fetch transcript for video ${id}:`, error);
           return null;
@@ -51,8 +55,14 @@ export async function GET(request: Request): Promise<Response> {
 
     const headers = new Headers();
     headers.set("Content-Type", "text/plain; charset=utf-8");
-    videoIds.forEach((id) => {
-      headers.set(`x-video-id`, id);
+    transcripts.forEach((t) => {
+      if (t) {
+        headers.set("title", t.videoTitle);
+        if (t.imageUrl) {
+          headers.set("img-url", t.imageUrl);
+        }
+        headers.set("id", t.id);
+      }
     });
 
     // Return plain text response

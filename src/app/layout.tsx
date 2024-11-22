@@ -40,7 +40,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className='fixed top-0 left-0 w-full h-16 flex justify-center items-center'>
+          <div className='fixed top-0 left-0 w-full h-16 px-4 flex items-center'>
             <LogoFull width={150} />
           </div>
           {children}

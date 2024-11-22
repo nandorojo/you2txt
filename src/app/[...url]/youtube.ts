@@ -11,15 +11,12 @@ interface TranscriptResponse {
   duration: number;
 }
 
-interface TranscriptResult {
-  videoTitle: string;
-  description: string;
-  transcript: TranscriptResponse[];
-}
+type TranscriptResult = z.infer<typeof transcriptResultSchema>;
 
 const transcriptResultSchema = z.object({
   videoTitle: z.string(),
-  description: z.string(),
+  description: z.string().nullish(),
+  imageUrl: z.string().nullish(),
   transcript: z.array(
     z.object({
       text: z.string(),
@@ -75,6 +72,9 @@ export async function transcriptFromYouTubeId(
     // Extract video metadata
     const videoTitle = playerResponse?.videoDetails?.title || "Untitled Video";
     const description = playerResponse?.videoDetails?.shortDescription || "";
+    const imageUrl =
+      playerResponse?.microformat?.playerMicroformatRenderer?.thumbnail
+        ?.thumbnails[0]?.url;
 
     // Get captions data
     const captions =
@@ -115,6 +115,7 @@ export async function transcriptFromYouTubeId(
       videoTitle,
       description,
       transcript,
+      imageUrl,
     };
 
     // Cache the result
