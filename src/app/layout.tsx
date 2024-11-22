@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
 import { LogoFull } from "@/app/logo2";
+import { APP_URL } from "@/app/APP_URL";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,6 +20,15 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "You2Txt | by Fernando Rojoyarn ",
   description: "YouTube Video → txt file",
+  openGraph: {
+    images: [
+      {
+        url: `https://${APP_URL}/og.png`,
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
