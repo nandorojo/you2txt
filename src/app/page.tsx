@@ -13,8 +13,7 @@ import { useState } from "react";
 import { useAsyncCallback } from "react-async-hook";
 import { Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-export const APP_URL = "you2txt.com";
+import { APP_URL } from "./APP_URL";
 
 export default function Page() {
   const [url, setUrl] = useState("");
@@ -59,8 +58,13 @@ export default function Page() {
         }}
         className='w-full max-w-xl space-y-4'
       >
-        <div className='relative w-full'>
-          <div className='pointer-events-none bg-gray-50 rounded-tl-md rounded-bl-md absolute inset-y-0 left-0 flex items-center px-2'>
+        <div
+          className='relative w-full'
+          style={{
+            boxShadow: "0 8px 29px -2px #a8a8a8",
+          }}
+        >
+          <div className='pointer-events-none bg-gradient-to-bl from-gray-50 to-gray-100 rounded-tl-md rounded-bl-md absolute inset-y-0 left-0 flex items-center px-2'>
             <span className='text-sm'>{APP_URL}/</span>
           </div>
           <Input
@@ -78,7 +82,7 @@ export default function Page() {
         <div className='flex items-center justify-center gap-4'>
           <Button
             type='submit'
-            className='bg-red-500 hover:bg-red-600 text-white'
+            className='bg-[#FF0032] hover:bg-red-700 text-white'
             disabled={mutation.loading}
           >
             {mutation.loading ? "Transcribing..." : "Transcribe Video"}
@@ -134,9 +138,11 @@ export default function Page() {
         </DialogContent>
       </Dialog>
 
-      <footer className='fixed bottom-4 right-4 text-sm text-muted-foreground'>
-        By @fernandotherojo
-      </footer>
+      <a target='_blank' href='https://x.com/fernandotherojo'>
+        <footer className='fixed bottom-4 right-4 text-sm text-muted-foreground'>
+          By @FernandoTheRojo
+        </footer>
+      </a>
     </main>
   );
 }
