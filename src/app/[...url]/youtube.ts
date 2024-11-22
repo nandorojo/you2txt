@@ -57,7 +57,12 @@ export async function transcriptFromYouTubeId(
   }
 
   const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-  const response = await fetch(videoUrl);
+  const response = await fetch(videoUrl, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    },
+  });
 
   if (!response.ok) {
     throw new TranscriptError(
@@ -88,8 +93,8 @@ export async function transcriptFromYouTubeId(
   const captions =
     playerResponse?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
 
+  console.log("[captions]", JSON.stringify(playerResponse.captions));
   if (!captions?.length) {
-    console.log("[missing-captions]", JSON.stringify(playerResponse.captions));
     throw new TranscriptError("No captions available for this video");
   }
 
