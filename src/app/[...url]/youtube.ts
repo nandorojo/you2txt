@@ -118,6 +118,9 @@ export async function transcriptFromYouTubeId(
 
   console.log("[captions]", JSON.stringify(playerResponse.captions));
   console.log("[captions][keys]", Object.keys(playerResponse));
+  Object.keys(playerResponse).forEach((key) => {
+    console.log("[key]", key, Object.keys(playerResponse[key]));
+  });
   if (!captions?.length) {
     throw new TranscriptError("No captions available for this video");
   }
