@@ -70,10 +70,12 @@ export default function Page() {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <aside className='flex-col hidden lg:flex w-[300px] pt-16 p-4 gap-2 h-full fixed top-0 left-0 bottom-0 overflow-y-auto'>
-        <h2 className='text-lg font-medium tracking-tight'>Recents</h2>
-        <div className='flex flex-col gap-1'>
-          <History />
+      <aside className='z-[0] flex-col hidden lg:flex w-[250px] bg-muted/15 pt-20 gap-2 h-full fixed top-0 left-0 bottom-0 overflow-y-auto'>
+        <div className='flex flex-col gap-2 flex-1 m-2 bg-muted rounded-lg p-4'>
+          <h2 className='text-lg font-medium tracking-tight'>Recents</h2>
+          <div className='flex flex-col gap-1'>
+            <History />
+          </div>
         </div>
       </aside>
       <header className='absolute top-0 right-0 p-3 lg:hidden'>

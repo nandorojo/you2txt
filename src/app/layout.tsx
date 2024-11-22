@@ -40,10 +40,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className='fixed top-0 left-0 w-full h-16 px-4 flex items-center'>
+          {children}
+          <div className='fixed top-0 left-0 w-full h-16 px-4 flex items-center z-40'>
             <LogoFull width={150} />
           </div>
-          {children}
         </ThemeProvider>
         <Toaster />
       </body>
