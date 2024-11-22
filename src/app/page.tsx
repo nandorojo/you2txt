@@ -37,16 +37,17 @@ function useMutation() {
       const response = await fetch(
         `/${url}&timestamps=${includeTimestamps}&filterOutMusic=${filterOutMusic}`
       );
-      if (!response.ok) {
-        throw new Error("Failed to get transcript");
-      }
       const id = response.headers.get("id");
       const title = response.headers.get("title");
       const imgUrl = response.headers.get("img-url");
       if (id && title && imgUrl) {
         const s = useTranscriptionHistory.getState();
 
-        s.actions.addVideo({ id, title, imgUrl });
+        s.actions.addVideo({
+          id: decodeURIComponent(atob(id)),
+          title: decodeURIComponent(atob(title)),
+          imgUrl: decodeURIComponent(atob(imgUrl)),
+        });
       } else {
         toast({
           title: "Transcript created, but...",
@@ -59,7 +60,7 @@ function useMutation() {
       onError(e, options) {
         toast({
           title: "Error",
-          description: "Is that a valid YouTube URL?",
+          description: e.message || "Is that a valid YouTube URL?",
           variant: "destructive",
         });
       },
@@ -219,7 +220,6 @@ function TranscriptDialog({
           {transcript ?? prev.current}
         </div>
         <div className='flex justify-end mt-4 gap-2'>
-          <div>Next time, try {}</div>
           <Button
             variant='outline'
             onClick={async () => {

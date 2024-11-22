@@ -10,6 +10,7 @@ export async function GET(request: Request): Promise<Response> {
     const { searchParams } = new URL(request.url);
     const videoParams = searchParams.getAll("v");
     const includeTimestamps = searchParams.get("timestamps") === "true";
+    const filterOutMusic = searchParams.get("filterOutMusic") === "true";
 
     // Get unique, valid video IDs
     const videoIds = [
@@ -27,23 +28,22 @@ export async function GET(request: Request): Promise<Response> {
     // Fetch all transcripts in parallel
     const transcripts = await Promise.all(
       videoIds.map(async (id) => {
-        try {
-          const r = await transcriptFromYouTubeId(id);
-          if (!r) {
-            throw new Error(`Failed to fetch transcript for video ${id}`);
-          }
-          return { ...r, id };
-        } catch (error) {
-          console.error(`Failed to fetch transcript for video ${id}:`, error);
-          return null;
-        }
+        const result = await transcriptFromYouTubeId(id);
+
+        return { ...result, id };
       })
     );
 
     // Filter out failed transcripts and format them
     const formattedTranscripts = transcripts
       .filter((t): t is NonNullable<typeof t> => t !== null)
-      .map((t) => transcriptToTextFile({ transcript: t, includeTimestamps }));
+      .map((t) =>
+        transcriptToTextFile({
+          transcript: t,
+          includeTimestamps,
+          filterOutMusic,
+        })
+      );
 
     if (!formattedTranscripts.length) {
       return new Response("Failed to fetch any transcripts", { status: 404 });
@@ -56,13 +56,19 @@ export async function GET(request: Request): Promise<Response> {
 
     const headers = new Headers();
     headers.set("Content-Type", "text/plain; charset=utf-8");
-    transcripts.forEach((t) => {
+    transcripts.forEach(({ transcript, ...t }) => {
       if (t) {
-        headers.set("title", t.videoTitle);
+        headers.set(
+          "title",
+          Buffer.from(t.videoTitle.toString()).toString("base64")
+        );
         if (t.imageUrl) {
-          headers.set("img-url", t.imageUrl);
+          headers.set(
+            "img-url",
+            Buffer.from(t.imageUrl.toString()).toString("base64")
+          );
         }
-        headers.set("id", t.id);
+        headers.set("id", Buffer.from(t.id.toString()).toString("base64"));
       }
     });
 

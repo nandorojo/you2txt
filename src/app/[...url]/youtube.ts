@@ -212,7 +212,7 @@ export function transcriptToTextFile({
   };
 
   segments.forEach((segment) => {
-    if (segment.text === "[Music]" && filterOutMusic) {
+    if (segment.text.trim() === "[Music]" && filterOutMusic) {
       return;
     }
     const line = includeTimestamps
