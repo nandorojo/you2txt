@@ -86,3 +86,84 @@ export async function transcriptFromYouTubeId(
     throw new TranscriptError("Failed to process transcript");
   }
 }
+
+export function getYouTubeVideoId(input: string): string | null {
+  // Handle empty/undefined input
+  if (!input?.trim()) {
+    return null;
+  }
+
+  const trimmedInput = input.trim();
+
+  // Check for exact 11-character video ID pattern
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmedInput)) {
+    return trimmedInput;
+  }
+
+  // Normalize URL format
+  let normalizedUrl = trimmedInput;
+  if (!normalizedUrl.startsWith("http")) {
+    normalizedUrl = normalizedUrl.replace(/^\/\//, "");
+    normalizedUrl = `https://${normalizedUrl}`;
+  }
+
+  // Check against known URL patterns
+  const patterns = [
+    /(?:youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/|youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch.*[?&]v=([a-zA-Z0-9_-]{11})/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = normalizedUrl.match(pattern);
+    if (match?.[1]) {
+      return match[1];
+    }
+  }
+
+  // Final attempt: Try parsing as URL
+  try {
+    const url = new URL(normalizedUrl);
+    const videoId = url.searchParams.get("v");
+    if (videoId?.length === 11) {
+      return videoId;
+    }
+  } catch {
+    // URL parsing failed, ignore and return null
+  }
+
+  return null;
+}
+
+export function transcriptToTextFile(
+  transcript: TranscriptResult,
+  includeTimestamps = false
+): string {
+  const { videoTitle, description, transcript: segments } = transcript;
+
+  const lines: string[] = [
+    "--",
+    `Title: ${videoTitle}`,
+    "",
+    `Description: ${description}`,
+    "",
+    "--",
+    "",
+  ];
+
+  const formatTimestamp = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `[${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}]`;
+  };
+
+  segments.forEach((segment) => {
+    const line = includeTimestamps
+      ? `${formatTimestamp(segment.start)} ${segment.text}`
+      : segment.text;
+    lines.push(line);
+  });
+
+  return lines.join("\n");
+}
