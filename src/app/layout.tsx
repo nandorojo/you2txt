@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
+import { LogoFull } from "@/app/logo2";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,6 +40,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <div className='fixed top-0 left-0 w-full h-16 flex justify-center items-center'>
+            <LogoFull width={150} />
+          </div>
           {children}
         </ThemeProvider>
         <Toaster />

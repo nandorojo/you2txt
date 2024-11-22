@@ -1,3 +1,10 @@
+import { Redis } from "@upstash/redis";
+import { z } from "zod";
+
+const redis = Redis.fromEnv();
+
+const CACHE_TTL = 60 * 60 * 24; // 24 hours in seconds
+
 interface TranscriptResponse {
   text: string;
   start: number;
@@ -10,6 +17,18 @@ interface TranscriptResult {
   transcript: TranscriptResponse[];
 }
 
+const transcriptResultSchema = z.object({
+  videoTitle: z.string(),
+  description: z.string(),
+  transcript: z.array(
+    z.object({
+      text: z.string(),
+      start: z.number(),
+      duration: z.number(),
+    })
+  ),
+});
+
 class TranscriptError extends Error {
   constructor(message: string) {
     super(message);
@@ -17,9 +36,27 @@ class TranscriptError extends Error {
   }
 }
 
+function getRedisCacheKey(videoId: string) {
+  return `youtube-transcript-${videoId}`;
+}
+
 export async function transcriptFromYouTubeId(
-  videoId: string
+  videoId: string,
+  ignoreCache = false
 ): Promise<TranscriptResult> {
+  // Check cache first
+  if (!ignoreCache) {
+    const cacheKey = getRedisCacheKey(videoId);
+    const cachedData = transcriptResultSchema.safeParse(
+      await redis.get(cacheKey)
+    );
+    console.log("cached!");
+
+    if (cachedData.success) {
+      return cachedData.data;
+    }
+  }
+
   try {
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
     const response = await fetch(videoUrl);
@@ -74,11 +111,19 @@ export async function transcriptFromYouTubeId(
       throw new TranscriptError("Failed to parse transcript data");
     }
 
-    return {
+    const result = {
       videoTitle,
       description,
       transcript,
     };
+
+    // Cache the result
+    const cacheKey = getRedisCacheKey(videoId);
+    await redis.set(cacheKey, result, {
+      ex: CACHE_TTL,
+    });
+
+    return result;
   } catch (error) {
     if (error instanceof TranscriptError) {
       throw error;

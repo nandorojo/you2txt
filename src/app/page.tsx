@@ -72,7 +72,7 @@ export default function Page() {
           </div>
           <input
             type='url'
-            placeholder='Enter YouTube URL'
+            placeholder='Paste YouTube URL'
             className='w-full ring-0 outline-none pl-[138px] h-12 border-transparent border-none rounded-lg shadow-lg shadow-gray-700/10 focus:shadow-gray-700/20  focus-visible:border-none dark:shadow-gray-500/10 dark:focus:shadow-gray-500/20 transition-all duration-150'
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -163,7 +163,7 @@ export default function Page() {
               className='gap-2'
             >
               <Copy className='h-4 w-4' />
-              Copy to clipboard
+              Copy
             </Button>
           </div>
         </DialogContent>

@@ -49,12 +49,14 @@ export async function GET(request: Request): Promise<Response> {
       "\n\n====video ended====\n\n"
     );
 
-    // Return plain text response
-    return new Response(combinedText, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-      },
+    const headers = new Headers();
+    headers.set("Content-Type", "text/plain; charset=utf-8");
+    videoIds.forEach((id) => {
+      headers.set(`x-video-id`, id);
     });
+
+    // Return plain text response
+    return new Response(combinedText, { headers });
   } catch (error) {
     console.error("Transcript processing error:", error);
     return new Response("Failed to process transcripts", { status: 500 });
