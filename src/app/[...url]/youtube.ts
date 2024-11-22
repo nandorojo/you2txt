@@ -1,5 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { z } from "zod";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 const redis = Redis.fromEnv();
 
@@ -57,11 +58,15 @@ export async function transcriptFromYouTubeId(
   }
 
   const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+  console.log("[proxy]", process.env.PROXY_URL);
   const response = await fetch(videoUrl, {
     headers: {
       "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     },
+    ...(process.env.PROXY_URL && {
+      agent: new HttpsProxyAgent(process.env.PROXY_URL),
+    }),
   });
 
   if (!response.ok) {
@@ -99,7 +104,7 @@ export async function transcriptFromYouTubeId(
   }
 
   // Fetch transcript data
-  const captionUrl = `${captions[0].baseUrl}&fmt=json3`;
+  const captionUrl = `${captions[0].baseUrl}&fmt=json3&lang=en`;
   const transcriptResponse = await fetch(captionUrl);
   const transcriptData = await transcriptResponse.json();
 
