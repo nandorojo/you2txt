@@ -38,7 +38,7 @@ export async function GET(request: Request): Promise<Response> {
     // Filter out failed transcripts and format them
     const formattedTranscripts = transcripts
       .filter((t): t is NonNullable<typeof t> => t !== null)
-      .map((t) => transcriptToTextFile(t, includeTimestamps));
+      .map((t) => transcriptToTextFile({ transcript: t, includeTimestamps }));
 
     if (!formattedTranscripts.length) {
       return new Response("Failed to fetch any transcripts", { status: 404 });

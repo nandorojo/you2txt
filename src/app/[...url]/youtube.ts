@@ -134,10 +134,15 @@ export function getYouTubeVideoId(input: string): string | null {
   return null;
 }
 
-export function transcriptToTextFile(
-  transcript: TranscriptResult,
-  includeTimestamps = false
-): string {
+export function transcriptToTextFile({
+  transcript,
+  includeTimestamps = true,
+  filterOutMusic = false,
+}: {
+  transcript: TranscriptResult;
+  includeTimestamps?: boolean;
+  filterOutMusic?: boolean;
+}): string {
   const { videoTitle, description, transcript: segments } = transcript;
 
   const lines: string[] = [
@@ -159,6 +164,9 @@ export function transcriptToTextFile(
   };
 
   segments.forEach((segment) => {
+    if (segment.text === "[Music]" && filterOutMusic) {
+      return;
+    }
     const line = includeTimestamps
       ? `${formatTimestamp(segment.start)} ${segment.text}`
       : segment.text;
