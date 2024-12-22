@@ -63,7 +63,7 @@ function getRedisCacheKey(videoId: string) {
 
 export async function transcriptFromYouTubeId(
   videoId: string,
-  ignoreCache = false
+  ignoreCache = process.env.KV_REST_API_URL != null,
 ): Promise<TranscriptResult> {
   // Check cache first
   if (!ignoreCache) {
